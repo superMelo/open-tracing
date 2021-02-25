@@ -28,8 +28,7 @@ public class TraceIntercept {
                                    @SuperCall Callable<?> callable) throws Exception {
         Trace trace = ContextManager.getOrCreate();
         trace.plus();
-        Span span = trace.createSpan(method.getDeclaringClass().getName()+"."+method.getName());
-        log.info("start-method:" + method + "-traceId:" + trace.getTraceId() + "-spanId:" + span.getSpanId());
+        trace.createSpan(method.getDeclaringClass().getName()+"."+method.getName());
         try {
             // 原有函数执行
             return callable.call();
@@ -45,7 +44,6 @@ public class TraceIntercept {
                 trace.setTime(endTime - startTime);
                 list.add(trace);
             }
-            log.info("end-method:" + method + "-traceId:" + trace.getTraceId() + "-spanId:" + span.getSpanId());
         }
     }
 }
