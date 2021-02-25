@@ -1,7 +1,5 @@
 package com.qyf.opentracing.controller;
 
-import com.alibaba.fastjson.JSON;
-import com.qyf.opentracing.agent.TraceIntercept;
 import com.qyf.opentracing.load.DynamicEngine;
 import com.qyf.opentracing.service.ServiceA;
 import com.qyf.opentracing.service.ServiceB;
