@@ -1,5 +1,6 @@
 package com.qyf.opentracing.agent;
 
+import com.qyf.opentracing.plugin.TraceIntercept;
 import net.bytebuddy.agent.builder.AgentBuilder;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType;
@@ -16,8 +17,15 @@ public class Agent {
         AgentBuilder.Transformer transformer = new AgentBuilder.Transformer() {
             @Override
             public DynamicType.Builder<?> transform(DynamicType.Builder<?> builder, TypeDescription typeDescription, ClassLoader classLoader, JavaModule javaModule) {
+
+                //扫描指定包下的所有拦截类
+//                for (){
+//
+//                }
+                TraceInterceptContext context = new TraceInterceptContext();
+                context.load(new TraceIntercept());
                 return builder.method(ElementMatchers.any()) //拦截任意方法
-                        .intercept(MethodDelegation.to(TraceIntercept.class)); //执行切入
+                        .intercept(MethodDelegation.to(TraceInterceptContext.class)); //执行切入
             }
         };
         AgentBuilder.Listener listener = new AgentBuilder.Listener() {
@@ -52,7 +60,9 @@ public class Agent {
                 .type(ElementMatchers.nameStartsWith("com.qyf.opentracing")
                         .and(ElementMatchers.not(ElementMatchers.nameStartsWith("com.qyf.opentracing.entity")))
                         .and(ElementMatchers.not(ElementMatchers.nameStartsWith("com.qyf.opentracing.data")))
-                        .and(ElementMatchers.not(ElementMatchers.nameStartsWith("com.qyf.opentracing.OpenTracingApplication"))))
+                        .and(ElementMatchers.not(ElementMatchers.nameStartsWith("com.qyf.opentracing.OpenTracingApplication")))
+                        .and(ElementMatchers.not(ElementMatchers.nameStartsWith("com.qyf.opentracing.plugin")))
+                )
                 .transform(transformer)
                 .with(listener)
                 .installOn(instrumentation);

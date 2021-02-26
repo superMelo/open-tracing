@@ -19,6 +19,7 @@ public class Trace {
 
     private List<Span> spans = new LinkedList<>();
 
+    private String spanStr;
 
     private Long time;
 
@@ -32,12 +33,18 @@ public class Trace {
     }
 
 
+
     public Span createSpan(String name){
         Span span = new Span();
         span.setSpanId(UUID.randomUUID().toString());
         span.setMethodName(name);
         span.setTraceId(traceId);
         spans.add(span);
+        if (spanStr == null){
+            spanStr = span.getMethodName();
+        }else {
+            spanStr += "->" + span.getMethodName();
+        }
         return span;
     }
 }
