@@ -24,7 +24,7 @@ public class TraceInterceptContext {
             // 原有函数执行
             return callable.call();
         } catch (Exception e) {
-           intercept.hadnleException(e);
+           intercept.handleException(e);
            return null;
         } finally {
             intercept.afterMethod(o);
