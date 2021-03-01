@@ -47,6 +47,6 @@ public  class TraceIntercept implements Intercept {
 
     @Override
     public ElementMatcher<MethodDescription> getMethodsMatcher() {
-        return ElementMatchers.any();
+        return ElementMatchers.named("test1").or(ElementMatchers.named("callB")).or(ElementMatchers.named("say"));
     }
 }

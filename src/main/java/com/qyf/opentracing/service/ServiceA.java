@@ -6,11 +6,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class ServiceA {
 
-    @Autowired
-    private ServiceB serviceB;
 
     public void callB(){
-        serviceB.say();
+       test();
     }
 
     public void test(){

@@ -26,6 +26,6 @@ public class TestIntercept implements Intercept{
 
     @Override
     public ElementMatcher<MethodDescription> getMethodsMatcher() {
-        return ElementMatchers.any();
+        return ElementMatchers.named("test2").or(ElementMatchers.named("callA")).or(ElementMatchers.named("test"));
     }
 }
