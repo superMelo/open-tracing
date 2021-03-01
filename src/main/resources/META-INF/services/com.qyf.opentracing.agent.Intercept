@@ -1,0 +1,2 @@
+com.qyf.opentracing.plugin.TestIntercept
+com.qyf.opentracing.plugin.TraceIntercept

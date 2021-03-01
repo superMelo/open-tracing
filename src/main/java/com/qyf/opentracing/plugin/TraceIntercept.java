@@ -3,6 +3,9 @@ package com.qyf.opentracing.plugin;
 import com.qyf.opentracing.agent.Intercept;
 import com.qyf.opentracing.entity.ContextManager;
 import com.qyf.opentracing.entity.Trace;
+import net.bytebuddy.description.method.MethodDescription;
+import net.bytebuddy.matcher.ElementMatcher;
+import net.bytebuddy.matcher.ElementMatchers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,5 +43,10 @@ public  class TraceIntercept implements Intercept {
     @Override
     public void handleException(Exception e) {
         log.error(e.getMessage());
+    }
+
+    @Override
+    public ElementMatcher<MethodDescription> getMethodsMatcher() {
+        return ElementMatchers.any();
     }
 }
