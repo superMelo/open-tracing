@@ -9,13 +9,12 @@ import java.lang.reflect.Method;
 
 public class TestIntercept implements Intercept{
     @Override
-    public Object beforeMethod(Method method) {
-        System.out.println("after");
-        return null;
+    public void beforeMethod(Method method) {
+        System.out.println(method.getName());
     }
 
     @Override
-    public void afterMethod(Object object) {
+    public void afterMethod() {
         System.out.println("after");
     }
 
@@ -26,6 +25,6 @@ public class TestIntercept implements Intercept{
 
     @Override
     public ElementMatcher<MethodDescription> getMethodsMatcher() {
-        return ElementMatchers.named("test2").or(ElementMatchers.named("callA")).or(ElementMatchers.named("test"));
+        return ElementMatchers.named("test2").or(ElementMatchers.named("callA")).or(ElementMatchers.named("say"));
     }
 }

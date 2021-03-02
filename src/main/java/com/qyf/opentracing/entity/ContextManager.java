@@ -8,8 +8,10 @@ public class ContextManager {
 
     private static ThreadLocal<Span> SPAN_CONTEXT = new ThreadLocal<>();
 
+    private static Trace trace;
+
     public static Trace getOrCreate(){
-        Trace trace = TRACE_CONTEXT.get();
+        trace = TRACE_CONTEXT.get();
         if (trace == null){
             trace = new Trace();
             trace.setTraceId(getId());
@@ -25,15 +27,25 @@ public class ContextManager {
     }
 
     public static Span createSpan(String name){
-        Trace trace = getOrCreate();
-        return trace.createSpan(name);
+        Span span = trace.createSpan(name);
+        return span;
     }
 
     public static void stopSpan(){
-        TRACE_CONTEXT.remove();
+        SPAN_CONTEXT.remove();
     }
 
     public static void stopTrace(){
+        trace = null;
         TRACE_CONTEXT.remove();
+    }
+
+
+    public static void plus(){
+        trace.plus();
+    }
+
+    public static void cut(){
+        trace.cut();
     }
 }

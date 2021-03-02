@@ -7,9 +7,9 @@ import java.lang.reflect.Method;
 
 public interface Intercept {
 
-    Object beforeMethod(Method method);
+    void beforeMethod(Method method);
 
-    void afterMethod(Object object);
+    void afterMethod();
 
     void handleException(Exception e);
 

@@ -20,17 +20,17 @@ public  class TraceIntercept implements Intercept {
     private Logger log = LoggerFactory.getLogger(this.getClass());
 
     @Override
-    public Object beforeMethod(Method method) {
-        Trace trace = ContextManager.getOrCreate();
-        trace.plus();
-        trace.createSpan(method.getDeclaringClass().getName()+"."+method.getName());
-        return trace;
+    public void beforeMethod(Method method) {
+        ContextManager.getOrCreate();
+        ContextManager.plus();
+        ContextManager.createSpan(method.getDeclaringClass().getName()+"."+method.getName());
     }
 
     @Override
-    public void afterMethod(Object o) {
-        Trace trace = (Trace)o;
+    public void afterMethod() {
+        Trace trace = ContextManager.getOrCreate();
         trace.cut();
+        ContextManager.stopSpan();
         if (trace.getNum() == 0) {
             ContextManager.stopTrace();
             Long startTime = trace.getTime();
@@ -47,6 +47,6 @@ public  class TraceIntercept implements Intercept {
 
     @Override
     public ElementMatcher<MethodDescription> getMethodsMatcher() {
-        return ElementMatchers.named("test1").or(ElementMatchers.named("callB")).or(ElementMatchers.named("say"));
+        return ElementMatchers.named("test1").or(ElementMatchers.named("callB")).or(ElementMatchers.named("test"));
     }
 }
