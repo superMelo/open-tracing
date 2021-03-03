@@ -6,7 +6,7 @@ public class ContextManager {
 
     private static ThreadLocal<Trace> TRACE_CONTEXT = new ThreadLocal<>();
 
-    private static ThreadLocal<Span> SPAN_CONTEXT = new ThreadLocal<>();
+//    private static ThreadLocal<Span> SPAN_CONTEXT = new ThreadLocal<>();
 
     private static Trace trace;
 
@@ -32,7 +32,7 @@ public class ContextManager {
     }
 
     public static void stopSpan(){
-        SPAN_CONTEXT.remove();
+//        SPAN_CONTEXT.remove();
     }
 
     public static void stopTrace(){

@@ -11,9 +11,15 @@ public class Span {
     @Id
     private String spanId;
 
-    private String traceId;
+    private String childFrom;
 
     private String methodName;
 
     private Long time;
+
+    private Tag tag;
+
+    private Log log;
+
+    private int num;
 }

@@ -34,16 +34,18 @@ public class DynamicEngine {
     public Object javaCodeToObject(String fullClassName, String javaCode) throws Exception{
         long start = System.currentTimeMillis();
         Object instance = null;
+
         JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
-        DiagnosticCollector<JavaFileObject> diagnostics  = new DiagnosticCollector<JavaFileObject>();
+        DiagnosticCollector<JavaFileObject> diagnostics  = new DiagnosticCollector<>();
 
         ClassFileManager manager = new ClassFileManager(compiler.getStandardFileManager(diagnostics, null, null));
 
+//        DynamicJavaFileManager manager = new DynamicJavaFileManager(compiler.getStandardFileManager(diagnostics, null, null));
+        ArrayList<JavaFileObject> javaFileObjects = new ArrayList<>();
 
-        ArrayList<JavaFileObject> javaFileObjects = new ArrayList<JavaFileObject>();
         javaFileObjects.add(new CharSequenceJavaFileObject(fullClassName, javaCode));
 
-        ArrayList<String> options = new ArrayList<String>();
+        ArrayList<String> options = new ArrayList<>();
         options.add("-encoding");
         options.add("UTF-8");
         options.add("-classpath");
@@ -54,9 +56,13 @@ public class DynamicEngine {
         boolean success = task.call();
 
         if (success){
+            //获取类对象
             JavaClassObject jco = manager.getJclassobject();
+            //获取动态加载器
             DynamicClassLoader dynamicClassLoader = new DynamicClassLoader(this.parentClassLoader);
+            //获取类
             Class clz = dynamicClassLoader.loadClass(fullClassName, jco);
+            //获取对象
             instance = clz.newInstance();
         }else {
             String error = "";

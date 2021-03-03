@@ -2,8 +2,12 @@ package com.qyf.opentracing.plugin;
 
 import com.qyf.opentracing.agent.Intercept;
 import com.qyf.opentracing.entity.ContextManager;
+import com.qyf.opentracing.entity.Log;
+import com.qyf.opentracing.entity.Span;
 import com.qyf.opentracing.entity.Trace;
+import net.bytebuddy.description.NamedElement;
 import net.bytebuddy.description.method.MethodDescription;
+import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.matcher.ElementMatcher;
 import net.bytebuddy.matcher.ElementMatchers;
 import org.slf4j.Logger;
@@ -27,9 +31,9 @@ public  class TraceIntercept implements Intercept {
     }
 
     @Override
-    public void afterMethod() {
+    public void afterMethod(Method method) {
         Trace trace = ContextManager.getOrCreate();
-        trace.cut();
+        ContextManager.cut();
         ContextManager.stopSpan();
         if (trace.getNum() == 0) {
             ContextManager.stopTrace();
@@ -41,12 +45,21 @@ public  class TraceIntercept implements Intercept {
     }
 
     @Override
-    public void handleException(Exception e) {
-        log.error(e.getMessage());
+    public void handleException(Method method, Exception e) {
+        Trace trace = ContextManager.getOrCreate();
+        Span span = trace.activeSpan(method.getName());
+        Log log = new Log(e.getMessage());
+        log.setStacks(e.getStackTrace());
+        span.setLog(log);
     }
 
     @Override
     public ElementMatcher<MethodDescription> getMethodsMatcher() {
         return ElementMatchers.named("test1").or(ElementMatchers.named("callB")).or(ElementMatchers.named("test"));
+    }
+
+    @Override
+    public ElementMatcher.Junction<NamedElement> getConstructorsInterceptPoints() {
+        return ElementMatchers.nameStartsWith("com.qyf.opentracing.controller.");
     }
 }

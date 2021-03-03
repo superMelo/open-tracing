@@ -1,6 +1,8 @@
 package com.qyf.opentracing.agent;
 
+import net.bytebuddy.description.NamedElement;
 import net.bytebuddy.description.method.MethodDescription;
+import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.matcher.ElementMatcher;
 
 import java.lang.reflect.Method;
@@ -9,9 +11,12 @@ public interface Intercept {
 
     void beforeMethod(Method method);
 
-    void afterMethod();
+    void afterMethod(Method method);
 
-    void handleException(Exception e);
+    void handleException(Method method, Exception e);
 
     ElementMatcher<MethodDescription> getMethodsMatcher();
+
+
+    ElementMatcher.Junction<NamedElement> getConstructorsInterceptPoints();
 }

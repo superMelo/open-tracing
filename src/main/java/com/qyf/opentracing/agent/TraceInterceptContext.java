@@ -24,10 +24,10 @@ public class TraceInterceptContext {
             // 原有函数执行
             return zuper.call();
         } catch (Exception e) {
-           intercept.handleException(e);
+           intercept.handleException(method, e);
            return null;
         } finally {
-            intercept.afterMethod();
+            intercept.afterMethod(method);
         }
     }
 
