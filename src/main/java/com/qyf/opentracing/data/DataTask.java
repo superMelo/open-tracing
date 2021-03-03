@@ -17,7 +17,7 @@ public class DataTask {
     private TraceService traceService;
 
 
-    @Scheduled(cron = "*/2 * * * * ?")
+    @Scheduled(cron = "*/1 * * * * ?")
     public void collect(){
         synchronized (TraceIntercept.list){
             List<Trace> list = TraceIntercept.list;

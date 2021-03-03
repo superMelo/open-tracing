@@ -46,11 +46,11 @@ public class TestController {
     @RequestMapping("test1")
     public String test1(){
         serviceA.callB();
-        return "test";
+        return "success";
     }
     @RequestMapping("test2")
     public String test2(){
         serviceB.callA();
-        return "test";
+        return "success";
     }
 }
