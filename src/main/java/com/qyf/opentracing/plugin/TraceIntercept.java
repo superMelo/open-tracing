@@ -25,15 +25,13 @@ public  class TraceIntercept implements Intercept {
     @Override
     public void beforeMethod(Method method) {
         ContextManager.getOrCreate();
-        ContextManager.plus();
         ContextManager.createSpan(method.getDeclaringClass().getName()+"."+method.getName());
     }
 
     @Override
     public void afterMethod(Method method) {
         Trace trace = ContextManager.getOrCreate();
-        ContextManager.cut();
-//        ContextManager.stopSpan();
+        ContextManager.stopSpan();
         if (trace.getNum() == 0) {
             ContextManager.stopTrace();
             trace.setEndTime(System.currentTimeMillis());

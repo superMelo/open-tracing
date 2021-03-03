@@ -28,24 +28,16 @@ public class ContextManager {
 
     public static Span createSpan(String name){
         Span span = trace.createSpan(name);
+        trace.plus();
         return span;
     }
 
-//    public static void stopSpan(){
-//        SPAN_CONTEXT.remove();
-//    }
+    public static void stopSpan(){
+        trace.cut();
+    }
 
     public static void stopTrace(){
         trace = null;
         TRACE_CONTEXT.remove();
-    }
-
-
-    public static void plus(){
-        trace.plus();
-    }
-
-    public static void cut(){
-        trace.cut();
     }
 }

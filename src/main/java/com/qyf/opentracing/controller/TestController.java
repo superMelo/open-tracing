@@ -45,8 +45,7 @@ public class TestController {
     private ServiceB serviceB;
     @RequestMapping("test1")
     public String test1(){
-        serviceA.callB();
-        return "success";
+        return serviceA.callB();
     }
     @RequestMapping("test2")
     public String test2(){

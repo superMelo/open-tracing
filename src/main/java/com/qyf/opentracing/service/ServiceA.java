@@ -7,11 +7,11 @@ import org.springframework.stereotype.Service;
 public class ServiceA {
 
 
-    public void callB(){
-       test();
+    public String callB(){
+       return test();
     }
 
-    public void test(){
-        System.out.println("test");
+    public String test(){
+       return "success";
     }
 }
