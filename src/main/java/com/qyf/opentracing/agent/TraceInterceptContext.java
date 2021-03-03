@@ -22,8 +22,6 @@ public class TraceInterceptContext {
                             @Origin Method method) throws Throwable {
         intercept.beforeMethod(method);
         try {
-            System.out.println(obj);
-            System.out.println(allArguments);
             // 原有函数执行
             return zuper.call();
         } catch (Exception e) {
