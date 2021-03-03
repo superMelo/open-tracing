@@ -1,13 +1,12 @@
 package com.qyf.opentracing.plugin;
 
-import com.qyf.opentracing.agent.Intercept;
 import com.qyf.opentracing.entity.ContextManager;
 import com.qyf.opentracing.entity.Log;
 import com.qyf.opentracing.entity.Span;
 import com.qyf.opentracing.entity.Trace;
+import com.qyf.opentracing.plugin.api.Intercept;
 import net.bytebuddy.description.NamedElement;
 import net.bytebuddy.description.method.MethodDescription;
-import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.matcher.ElementMatcher;
 import net.bytebuddy.matcher.ElementMatchers;
 import org.slf4j.Logger;
@@ -34,12 +33,10 @@ public  class TraceIntercept implements Intercept {
     public void afterMethod(Method method) {
         Trace trace = ContextManager.getOrCreate();
         ContextManager.cut();
-        ContextManager.stopSpan();
+//        ContextManager.stopSpan();
         if (trace.getNum() == 0) {
             ContextManager.stopTrace();
-            Long startTime = trace.getTime();
-            long endTime = System.currentTimeMillis();
-            trace.setTime(endTime - startTime);
+            trace.setEndTime(System.currentTimeMillis());
             list.add(trace);
         }
     }

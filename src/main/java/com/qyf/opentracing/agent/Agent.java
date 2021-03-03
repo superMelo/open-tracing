@@ -1,5 +1,6 @@
 package com.qyf.opentracing.agent;
 
+import com.qyf.opentracing.plugin.api.Intercept;
 import net.bytebuddy.agent.builder.AgentBuilder;
 import net.bytebuddy.description.NamedElement;
 import net.bytebuddy.description.type.TypeDescription;

@@ -8,6 +8,8 @@ public interface TraceService {
 
     Iterable<Trace> findAll();
 
-    void save(Trace trace);
+    void saveAll(Iterable<Trace> list);
+
+    void deleteAll();
 
 }

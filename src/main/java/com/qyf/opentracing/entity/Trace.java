@@ -7,7 +7,7 @@ import org.springframework.data.elasticsearch.annotations.Document;
 import java.util.*;
 
 @Data
-@Document(indexName = "trace")
+@Document(indexName = "open-trace")
 public class Trace {
 
     @Id
@@ -19,7 +19,9 @@ public class Trace {
 
     private String spanStr;
 
-    private Long time;
+    private Long startTime;
+
+    private Long endTime;
 
 
     public void plus() {

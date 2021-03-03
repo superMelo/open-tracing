@@ -15,7 +15,7 @@ public class ContextManager {
         if (trace == null){
             trace = new Trace();
             trace.setTraceId(getId());
-            trace.setTime(System.currentTimeMillis());
+            trace.setStartTime(System.currentTimeMillis());
             TRACE_CONTEXT.set(trace);
         }
         return trace;
@@ -31,9 +31,9 @@ public class ContextManager {
         return span;
     }
 
-    public static void stopSpan(){
+//    public static void stopSpan(){
 //        SPAN_CONTEXT.remove();
-    }
+//    }
 
     public static void stopTrace(){
         trace = null;

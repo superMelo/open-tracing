@@ -10,15 +10,20 @@ import org.springframework.stereotype.Service;
 public class TraceServiceImpl implements TraceService{
 
     @Autowired
-    private TraceRepository dao;
+    TraceRepository repository;
 
     @Override
     public Iterable<Trace> findAll() {
-        return dao.findAll();
+        return repository.findAll();
     }
 
     @Override
-    public void save(Trace trace) {
-        dao.save(trace);
+    public void saveAll(Iterable<Trace> list) {
+       repository.saveAll(list);
+    }
+
+    @Override
+    public void deleteAll() {
+        repository.deleteAll();
     }
 }

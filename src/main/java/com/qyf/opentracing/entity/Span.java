@@ -6,7 +6,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 
 @Data
-@Document(indexName = "trace")
+@Document(indexName = "open-trace")
 public class Span {
     @Id
     private String spanId;

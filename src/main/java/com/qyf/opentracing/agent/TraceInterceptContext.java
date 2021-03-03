@@ -1,6 +1,7 @@
 package com.qyf.opentracing.agent;
 
 
+import com.qyf.opentracing.plugin.api.Intercept;
 import net.bytebuddy.implementation.bind.annotation.*;
 
 import java.lang.reflect.Method;
@@ -9,7 +10,7 @@ import java.util.concurrent.Callable;
 
 public class TraceInterceptContext {
 
-    private  Intercept intercept;
+    private Intercept intercept;
 
 
     public TraceInterceptContext(Intercept intercept) {
@@ -21,6 +22,8 @@ public class TraceInterceptContext {
                             @Origin Method method) throws Throwable {
         intercept.beforeMethod(method);
         try {
+            System.out.println(obj);
+            System.out.println(allArguments);
             // 原有函数执行
             return zuper.call();
         } catch (Exception e) {
