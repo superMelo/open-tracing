@@ -10,7 +10,7 @@ public class Log {
 
     private StackTraceElement[] stacks;
 
-    public Log(String errMsg) {
+    public Log(String msg) {
         this.msg = msg;
     }
 }

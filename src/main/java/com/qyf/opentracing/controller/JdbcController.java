@@ -24,9 +24,10 @@ public class JdbcController {
         return JSON.toJSONString(list);
     }
 
-
-
-
-
+    @RequestMapping("findRole")
+    public String findRole(){
+        List<Map<String, Object>> mapList = jdbcTemplate.queryForList("SELECT * FROM role");
+        return JSON.toJSONString(mapList);
+    }
 
 }

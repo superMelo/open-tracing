@@ -8,7 +8,7 @@ import java.lang.reflect.Method;
 
 public interface Intercept {
 
-    void beforeMethod(Method method, Object object);
+    void beforeMethod(Method method, Object object, Object[] allArguments);
 
     void afterMethod(Method method);
 

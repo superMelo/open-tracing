@@ -1,6 +1,6 @@
 package com.qyf.opentracing.entity;
 
-import com.qyf.opentracing.plugin.ControllerIntercept;
+import com.qyf.opentracing.plugin.DispatchIntercept;
 
 import java.util.UUID;
 
@@ -35,16 +35,21 @@ public class ContextManager {
     }
 
     public static void stopSpan() {
-        trace.cut();
+        if (trace != null){
+            trace.cut();
+        }
     }
 
 
     public static void stopTrace() {
-        if (trace.getNum() == 0) {
-            trace.setEndTime(System.currentTimeMillis());
-            ControllerIntercept.list.add(trace);
-            trace = null;
-            TRACE_CONTEXT.remove();
+        if (trace != null){
+            if (trace.getNum() == 0) {
+                trace.setEndTime(System.currentTimeMillis());
+                DispatchIntercept.list.add(trace);
+                trace = null;
+                TRACE_CONTEXT.remove();
+            }
         }
+
     }
 }

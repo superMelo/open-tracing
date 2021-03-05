@@ -17,13 +17,10 @@ import java.util.List;
 
 public class JdbcIntercept implements Intercept{
     @Override
-    public void beforeMethod(Method method, Object object) {
+    public void beforeMethod(Method method, Object object, Object[] allArguments) {
         ContextManager.getOrCreate();
-        JdbcTemplate template = (JdbcTemplate) object;
-        DataSource dataSource = template.getDataSource();
-        Span span = ContextManager.createSpan(method.getName());
-        List<Tag> tags = new LinkedList<>();
-        putTags(dataSource, tags, span);
+        Span span = ContextManager.createSpan(method.getDeclaringClass().getName()+"."+method.getName());
+        putTags(object, span, (String) allArguments[0]);
     }
 
     @Override
@@ -47,16 +44,23 @@ public class JdbcIntercept implements Intercept{
         return ElementMatchers.named("org.springframework.jdbc.core.JdbcTemplate");
     }
 
-    private void putTags(DataSource dataSource, List<Tag> tags, Span span){
+    private void putTags(Object o, Span span, String sqlStr){
+        JdbcTemplate template = (JdbcTemplate) o;
+        DataSource dataSource = template.getDataSource();
+        List<Tag> tags = new LinkedList<>();
         try {
             Connection connection = dataSource.getConnection();
             DatabaseMetaData metaData = connection.getMetaData();
             Tag userName = new Tag("userName", metaData.getUserName());
             Tag url = new Tag("url", metaData.getURL());
             Tag data = new Tag("data", metaData.getDatabaseProductName());
+            Tag sql = new Tag("sql", sqlStr);
+            Tag driverName = new Tag("driverName", metaData.getDriverName());
             tags.add(userName);
             tags.add(url);
             tags.add(data);
+            tags.add(sql);
+            tags.add(driverName);
             span.setTag(tags);
             span.setLog(new Log("success"));
         }catch (Exception e){

@@ -20,7 +20,7 @@ public class TraceInterceptContext {
     @RuntimeType
     public Object intercept(@This Object obj, @AllArguments Object[] allArguments, @SuperCall Callable<?> zuper,
                             @Origin Method method) throws Throwable {
-        intercept.beforeMethod(method, obj);
+        intercept.beforeMethod(method, obj, allArguments);
         try {
             // 原有函数执行
             return zuper.call();

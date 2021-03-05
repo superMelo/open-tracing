@@ -1,7 +1,7 @@
 package com.qyf.opentracing.data;
 
 import com.qyf.opentracing.entity.Trace;
-import com.qyf.opentracing.plugin.ControllerIntercept;
+import com.qyf.opentracing.plugin.DispatchIntercept;
 import com.qyf.opentracing.service.TraceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -19,11 +19,11 @@ public class DataTask {
 
     @Scheduled(cron = "*/1 * * * * ?")
     public void collect(){
-        synchronized (ControllerIntercept.list){
-            if (ControllerIntercept.list != null && ControllerIntercept.list.size() > 0){
-                List<Trace> list = ControllerIntercept.list;
+        synchronized (DispatchIntercept.list){
+            if (DispatchIntercept.list != null && DispatchIntercept.list.size() > 0){
+                List<Trace> list = DispatchIntercept.list;
                 traceService.saveAll(list);
-                ControllerIntercept.list.clear();
+                DispatchIntercept.list.clear();
             }
         }
     }
