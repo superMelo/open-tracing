@@ -24,32 +24,7 @@ public class Agent {
             }
             return builder;
         };
-        AgentBuilder.Listener listener = new AgentBuilder.Listener() {
-            @Override
-            public void onDiscovery(String s, ClassLoader classLoader, JavaModule javaModule, boolean b) {
 
-            }
-
-            @Override
-            public void onTransformation(TypeDescription typeDescription, ClassLoader classLoader, JavaModule javaModule, boolean b, DynamicType dynamicType) {
-
-            }
-
-            @Override
-            public void onIgnored(TypeDescription typeDescription, ClassLoader classLoader, JavaModule javaModule, boolean b) {
-
-            }
-
-            @Override
-            public void onError(String s, ClassLoader classLoader, JavaModule javaModule, boolean b, Throwable throwable) {
-
-            }
-
-            @Override
-            public void onComplete(String s, ClassLoader classLoader, JavaModule javaModule, boolean b) {
-
-            }
-        };
         //加载拦截的包路径
         ElementMatcher.Junction<NamedElement> junction = null;
         for (Intercept intercept : intercepts) {
@@ -63,7 +38,34 @@ public class Agent {
                 //需要拦截的包路径
                 .type(junction)
                 .transform(transformer)
-                .with(listener)
+                .with(new Listener())
                 .installOn(instrumentation);
+    }
+
+    private static class Listener implements AgentBuilder.Listener{
+        @Override
+        public void onDiscovery(String s, ClassLoader classLoader, JavaModule javaModule, boolean b) {
+
+        }
+
+        @Override
+        public void onTransformation(TypeDescription typeDescription, ClassLoader classLoader, JavaModule javaModule, boolean b, DynamicType dynamicType) {
+
+        }
+
+        @Override
+        public void onIgnored(TypeDescription typeDescription, ClassLoader classLoader, JavaModule javaModule, boolean b) {
+
+        }
+
+        @Override
+        public void onError(String s, ClassLoader classLoader, JavaModule javaModule, boolean b, Throwable throwable) {
+
+        }
+
+        @Override
+        public void onComplete(String s, ClassLoader classLoader, JavaModule javaModule, boolean b) {
+
+        }
     }
 }
