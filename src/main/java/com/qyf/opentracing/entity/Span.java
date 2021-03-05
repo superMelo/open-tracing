@@ -5,6 +5,8 @@ import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 
+import java.util.List;
+
 @Data
 @Document(indexName = "open-trace")
 public class Span {
@@ -17,7 +19,7 @@ public class Span {
 
     private Long time;
 
-    private Tag tag;
+    private List<Tag> tag;
 
     private Log log;
 

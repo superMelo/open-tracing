@@ -1,5 +1,7 @@
 package com.qyf.opentracing.entity;
 
+import com.qyf.opentracing.plugin.ControllerIntercept;
+
 import java.util.UUID;
 
 public class ContextManager {
@@ -10,9 +12,9 @@ public class ContextManager {
 
     private static Trace trace;
 
-    public static Trace getOrCreate(){
+    public static Trace getOrCreate() {
         trace = TRACE_CONTEXT.get();
-        if (trace == null){
+        if (trace == null) {
             trace = new Trace();
             trace.setTraceId(getId());
             trace.setStartTime(System.currentTimeMillis());
@@ -22,22 +24,27 @@ public class ContextManager {
     }
 
 
-    public static String getId(){
+    public static String getId() {
         return UUID.randomUUID().toString();
     }
 
-    public static Span createSpan(String name){
+    public static Span createSpan(String name) {
         Span span = trace.createSpan(name);
         trace.plus();
         return span;
     }
 
-    public static void stopSpan(){
+    public static void stopSpan() {
         trace.cut();
     }
 
-    public static void stopTrace(){
-        trace = null;
-        TRACE_CONTEXT.remove();
+
+    public static void stopTrace() {
+        if (trace.getNum() == 0) {
+            trace.setEndTime(System.currentTimeMillis());
+            ControllerIntercept.list.add(trace);
+            trace = null;
+            TRACE_CONTEXT.remove();
+        }
     }
 }

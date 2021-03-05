@@ -12,7 +12,7 @@ public class TestIntercept implements Intercept {
 
 
     @Override
-    public void beforeMethod(Method method) {
+    public void beforeMethod(Method method, Object object) {
         System.out.println(method.getName() + "-before");
     }
 

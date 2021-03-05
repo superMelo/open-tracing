@@ -2,14 +2,13 @@ package com.qyf.opentracing.plugin.api;
 
 import net.bytebuddy.description.NamedElement;
 import net.bytebuddy.description.method.MethodDescription;
-import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.matcher.ElementMatcher;
 
 import java.lang.reflect.Method;
 
 public interface Intercept {
 
-    void beforeMethod(Method method);
+    void beforeMethod(Method method, Object object);
 
     void afterMethod(Method method);
 

@@ -1,15 +1,19 @@
 package com.qyf.opentracing.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.qyf.opentracing.load.DynamicEngine;
 import com.qyf.opentracing.service.ServiceA;
 import com.qyf.opentracing.service.ServiceB;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import sun.misc.IOUtils;
 
 import java.io.*;
 import java.lang.reflect.Method;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 public class TestController {
@@ -39,6 +43,7 @@ public class TestController {
     }
 
 
+
     @Autowired
     private ServiceA serviceA;
     @Autowired
@@ -52,4 +57,7 @@ public class TestController {
         serviceB.callA();
         return "success";
     }
+
+
+
 }

@@ -2,7 +2,7 @@ package com.qyf.opentracing.data;
 
 import com.alibaba.fastjson.JSON;
 import com.qyf.opentracing.entity.Trace;
-import com.qyf.opentracing.plugin.TraceIntercept;
+import com.qyf.opentracing.plugin.ControllerIntercept;
 import com.qyf.opentracing.service.TraceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,13 +25,13 @@ public class DataController {
 
     @RequestMapping("delete")
     public void delete(){
-        TraceIntercept.list.clear();
+        ControllerIntercept.list.clear();
         traceService.deleteAll();
     }
 
     @RequestMapping("save")
     public void save(){
-        List<Trace> list = TraceIntercept.list;
+        List<Trace> list = ControllerIntercept.list;
         traceService.saveAll(list);
     }
 }

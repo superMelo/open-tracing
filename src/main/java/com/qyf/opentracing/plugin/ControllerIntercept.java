@@ -16,27 +16,22 @@ import java.lang.reflect.Method;
 import java.util.LinkedList;
 import java.util.List;
 
-public  class TraceIntercept implements Intercept {
+public class ControllerIntercept implements Intercept {
 
     public static List<Trace> list = new LinkedList<>();
 
     private Logger log = LoggerFactory.getLogger(this.getClass());
 
     @Override
-    public void beforeMethod(Method method) {
+    public void beforeMethod(Method method, Object o) {
         ContextManager.getOrCreate();
         ContextManager.createSpan(method.getDeclaringClass().getName()+"."+method.getName());
     }
 
     @Override
     public void afterMethod(Method method) {
-        Trace trace = ContextManager.getOrCreate();
         ContextManager.stopSpan();
-        if (trace.getNum() == 0) {
-            ContextManager.stopTrace();
-            trace.setEndTime(System.currentTimeMillis());
-            list.add(trace);
-        }
+        ContextManager.stopTrace();
     }
 
     @Override
@@ -50,7 +45,10 @@ public  class TraceIntercept implements Intercept {
 
     @Override
     public ElementMatcher<MethodDescription> getMethodsMatcher() {
-        return ElementMatchers.named("test1").or(ElementMatchers.named("callB")).or(ElementMatchers.named("test"));
+        return ElementMatchers.named("test1")
+                .or(ElementMatchers.named("callB"))
+                .or(ElementMatchers.named("test"))
+                .or(ElementMatchers.named("findMenu"));
     }
 
     @Override

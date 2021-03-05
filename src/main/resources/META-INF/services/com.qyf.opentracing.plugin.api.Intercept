@@ -1,2 +1,3 @@
 com.qyf.opentracing.plugin.TestIntercept
-com.qyf.opentracing.plugin.TraceIntercept
+com.qyf.opentracing.plugin.ControllerIntercept
+com.qyf.opentracing.plugin.JdbcIntercept
