@@ -1,6 +1,9 @@
 package com.qyf.opentracing.plugin;
 
 import com.qyf.opentracing.entity.ContextManager;
+import com.qyf.opentracing.entity.Log;
+import com.qyf.opentracing.entity.Span;
+import com.qyf.opentracing.entity.Trace;
 import com.qyf.opentracing.plugin.api.Intercept;
 import net.bytebuddy.description.NamedElement;
 import net.bytebuddy.description.method.MethodDescription;
@@ -26,7 +29,7 @@ public class ServiceIntercept implements Intercept {
 
     @Override
     public void handleException(Method method, Exception e) {
-        System.out.println(e.getMessage());
+        ContextManager.setLog(method, e);
     }
 
     @Override

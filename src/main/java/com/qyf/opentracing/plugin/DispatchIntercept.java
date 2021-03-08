@@ -42,11 +42,7 @@ public class DispatchIntercept implements Intercept {
 
     @Override
     public void handleException(Method method, Exception e) {
-        Trace trace = ContextManager.getOrCreate();
-        Span span = trace.activeSpan(method.getName());
-        Log log = new Log(e.getMessage());
-        log.setStacks(e.getStackTrace());
-        span.setLog(log);
+        ContextManager.setLog(method, e);
     }
 
     @Override

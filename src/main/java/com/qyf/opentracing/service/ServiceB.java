@@ -6,11 +6,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class ServiceB {
 
-    public void say(){
+    public void say() throws Exception{
         System.out.println("test");
+        throw new Exception("test exception");
     }
 
-    public void callA(){
+    public void callA() throws Exception{
         say();
     }
 }

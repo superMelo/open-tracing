@@ -4,6 +4,7 @@ import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 
+import java.lang.reflect.Method;
 import java.util.*;
 
 @Data
@@ -50,7 +51,11 @@ public class Trace {
         return spans.get(name);
     }
 
-    public Span activeSpan(String name) {
+    public Span activeSpan(Method method) {
+        String name = method.getDeclaringClass().getName() + "." + method.getName();
+        if (spans.get(name) == null){
+            return ContextManager.createSpan(name);
+        }
         return spans.get(name);
     }
 }

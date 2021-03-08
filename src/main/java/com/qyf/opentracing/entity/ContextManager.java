@@ -1,7 +1,11 @@
 package com.qyf.opentracing.entity;
 
 import com.qyf.opentracing.plugin.DispatchIntercept;
+import com.sun.org.apache.bcel.internal.generic.NEW;
 
+import java.lang.reflect.Method;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.UUID;
 
 public class ContextManager {
@@ -50,6 +54,22 @@ public class ContextManager {
                 TRACE_CONTEXT.remove();
             }
         }
+    }
 
+    public static void setLog(Method method, Exception e){
+        Trace trace = ContextManager.getOrCreate();
+        Span span = trace.activeSpan(method);
+        Log log = new Log(e.getMessage());
+        StackTraceElement[] stackTrace = e.getStackTrace();
+        List<Element> elements = new LinkedList<>();
+        for (StackTraceElement stackTraceElement : stackTrace) {
+            Element element = new Element();
+            element.setLineNum(stackTraceElement.getLineNumber());
+            element.setMethodName(stackTraceElement.getMethodName());
+            element.setClassName(stackTraceElement.getClassName());
+            elements.add(element);
+        }
+        log.setStacks(elements);
+        span.setLog(log);
     }
 }

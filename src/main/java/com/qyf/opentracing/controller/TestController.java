@@ -54,10 +54,11 @@ public class TestController {
     }
     @RequestMapping("test2")
     public String test2(){
-        serviceB.callA();
-        return "success";
+        try {
+            serviceB.callA();
+            return "success";
+        }catch (Exception e){
+            return e.getMessage();
+        }
     }
-
-
-
 }

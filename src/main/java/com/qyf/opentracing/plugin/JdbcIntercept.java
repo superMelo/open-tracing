@@ -31,7 +31,7 @@ public class JdbcIntercept implements Intercept{
 
     @Override
     public void handleException(Method method, Exception e) {
-
+        ContextManager.setLog(method, e);
     }
 
     @Override
