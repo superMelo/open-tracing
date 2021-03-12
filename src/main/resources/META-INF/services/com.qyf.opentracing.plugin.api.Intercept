@@ -1,3 +1,4 @@
 com.qyf.opentracing.plugin.ServiceIntercept
 com.qyf.opentracing.plugin.DispatchIntercept
 com.qyf.opentracing.plugin.JdbcIntercept
+com.qyf.opentracing.plugin.RpcIntercept
