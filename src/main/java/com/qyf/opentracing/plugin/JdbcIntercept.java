@@ -51,10 +51,10 @@ public class JdbcIntercept implements Intercept{
         try {
             Connection connection = dataSource.getConnection();
             DatabaseMetaData metaData = connection.getMetaData();
-            Tag userName = new Tag("userName", metaData.getUserName());
+
             Tag url = new Tag("url", metaData.getURL());
             Tag data = new Tag("data", metaData.getDatabaseProductName());
-            Tag sql = new Tag("sql", sqlStr);
+            Tag sql = new Tag("sql", sqlStr);Tag userName = new Tag("userName", metaData.getUserName());
             Tag driverName = new Tag("driverName", metaData.getDriverName());
             tags.add(userName);
             tags.add(url);

@@ -21,6 +21,8 @@ public class RpcIntercept implements Intercept{
 
     @Override
     public void beforeMethod(Method method, Object object, Object[] allArguments) {
+        Trace trace = ContextManager.getOrCreate();
+        log.info("start traceInfo:{}", JSON.toJSONString(trace));
         ContextManager.getOrCreate();
         ContextManager.createSpan(method.getDeclaringClass().getName()+"."+method.getName());
     }
@@ -28,7 +30,7 @@ public class RpcIntercept implements Intercept{
     @Override
     public void afterMethod(Method method) {
         Trace trace = ContextManager.getOrCreate();
-        log.info("traceInfo:{}", JSON.toJSONString(trace));
+        log.info("end traceInfo:{}", JSON.toJSONString(trace));
         ContextManager.stopSpan();
         ContextManager.stopTrace();
         EsClient.save(trace);
