@@ -1,9 +1,8 @@
 package com.qyf.opentracing.plugin;
 
 import com.alibaba.fastjson.JSON;
+import com.qyf.opentracing.entity.*;
 import com.qyf.opentracing.es.EsClient;
-import com.qyf.opentracing.entity.ContextManager;
-import com.qyf.opentracing.entity.Trace;
 import com.qyf.opentracing.plugin.api.Intercept;
 import net.bytebuddy.description.NamedElement;
 import net.bytebuddy.description.method.MethodDescription;
@@ -14,6 +13,8 @@ import org.slf4j.LoggerFactory;
 
 
 import java.lang.reflect.Method;
+import java.util.LinkedList;
+import java.util.List;
 
 public class RpcIntercept implements Intercept{
 
@@ -25,6 +26,7 @@ public class RpcIntercept implements Intercept{
         log.info("start traceInfo:{}", JSON.toJSONString(trace));
         ContextManager.getOrCreate();
         ContextManager.createSpan(method.getDeclaringClass().getName()+"."+method.getName());
+        ContextManager.setLog(method, "success", Thread.currentThread().getStackTrace());
     }
 
     @Override
@@ -38,7 +40,7 @@ public class RpcIntercept implements Intercept{
 
     @Override
     public void handleException(Method method, Exception e) {
-        ContextManager.setLog(method, e);
+        ContextManager.setLog(method, e.getMessage(), e.getStackTrace());
     }
 
     @Override

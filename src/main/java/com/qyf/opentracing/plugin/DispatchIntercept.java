@@ -23,15 +23,9 @@ public class DispatchIntercept implements Intercept {
 
     @Override
     public void beforeMethod(Method method, Object o, Object[] allArguments) {
-        HttpServletRequest request = (HttpServletRequest) allArguments[0];
-        StringBuffer requestURL = request.getRequestURL();
-        String url = requestURL.toString();
-        if (url.equals("http://127.0.0.1:8081/delete") || url.equals("http://127.0.0.1:8081/findAll")){
-        }else {
-            ContextManager.getOrCreate();
-            Span span = ContextManager.createSpan(method.getDeclaringClass().getName() + "." + method.getName());
-            putTags(allArguments, span);
-        }
+        ContextManager.getOrCreate();
+        Span span = ContextManager.createSpan(method.getDeclaringClass().getName() + "." + method.getName());
+        putTags(allArguments, span);
     }
 
     @Override
@@ -42,16 +36,11 @@ public class DispatchIntercept implements Intercept {
 
     @Override
     public void handleException(Method method, Exception e) {
-        ContextManager.setLog(method, e);
+        ContextManager.setLog(method, e.getMessage(), e.getStackTrace());
     }
 
     @Override
     public ElementMatcher<MethodDescription> getMethodsMatcher() {
-//        return ElementMatchers.named("test1")
-//                .or(ElementMatchers.named("callB"))
-//                .or(ElementMatchers.named("test"))
-//                .or(ElementMatchers.named("findMenu"))
-//                .or(ElementMatchers.named("findRole"));
         return ElementMatchers.named("doDispatch");
     }
 

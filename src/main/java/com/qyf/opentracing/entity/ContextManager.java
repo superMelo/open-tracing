@@ -33,43 +33,51 @@ public class ContextManager {
     }
 
     public static Span createSpan(String name) {
-        Span span = trace.createSpan(name);
-        trace.plus();
-        return span;
+        synchronized (trace){
+            Span span = trace.createSpan(name);
+            trace.plus();
+            return span;
+        }
     }
 
     public static void stopSpan() {
-        if (trace != null){
-            trace.cut();
+        synchronized (trace){
+            if (trace != null){
+                trace.cut();
+            }
         }
     }
 
 
     public static void stopTrace() {
-        if (trace != null){
-            if (trace.getNum() == 0) {
-                trace.setEndTime(System.currentTimeMillis());
-                DispatchIntercept.list.add(trace);
-                trace = null;
-                TRACE_CONTEXT.remove();
+        synchronized (trace){
+            if (trace != null){
+                if (trace.getNum() == 0) {
+                    trace.setEndTime(System.currentTimeMillis());
+                    DispatchIntercept.list.add(trace);
+                    trace = null;
+                    TRACE_CONTEXT.remove();
+                }
             }
         }
     }
 
-    public static void setLog(Method method, Exception e){
-        Trace trace = ContextManager.getOrCreate();
-        Span span = trace.activeSpan(method);
-        Log log = new Log(e.getMessage());
-        StackTraceElement[] stackTrace = e.getStackTrace();
-        List<Element> elements = new LinkedList<>();
-        for (StackTraceElement stackTraceElement : stackTrace) {
-            Element element = new Element();
-            element.setLineNum(stackTraceElement.getLineNumber());
-            element.setMethodName(stackTraceElement.getMethodName());
-            element.setClassName(stackTraceElement.getClassName());
-            elements.add(element);
+    public static void setLog(Method method, String msg, StackTraceElement[] stackTrace){
+        synchronized (trace){
+            if (trace != null){
+                Span span = trace.activeSpan(method);
+                Log log = new Log(msg);
+                List<Element> elements = new LinkedList<>();
+                for (StackTraceElement stackTraceElement : stackTrace) {
+                    Element element = new Element();
+                    element.setLineNum(stackTraceElement.getLineNumber());
+                    element.setMethodName(stackTraceElement.getMethodName());
+                    element.setClassName(stackTraceElement.getClassName());
+                    elements.add(element);
+                }
+                log.setStacks(elements);
+                span.setLog(log);
+            }
         }
-        log.setStacks(elements);
-        span.setLog(log);
     }
 }
